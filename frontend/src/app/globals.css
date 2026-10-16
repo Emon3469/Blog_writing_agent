@@ -1,0 +1,224 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --canvas: #f6f6f7;
+  --surface: #ffffff;
+  --panel: #f3f3f4;
+  --subtle: #efeff1;
+  --line: #e7e7ea;
+  --line-strong: #d9d9de;
+  --ink: #0b0b0c;
+  --ink-soft: #2a2a2e;
+  --muted: #6b6b73;
+  --faint: #9a9aa3;
+  --primary: #0b0b0c;
+  --primary-ink: #ffffff;
+  --ring: rgba(11, 11, 12, 0.12);
+  --chart-stroke: #b9b9c0;
+  --chart-fill: #e9e9ec;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --warning: #d97706;
+  color-scheme: light;
+}
+
+.dark {
+  --canvas: #09090b;
+  --surface: #131316;
+  --panel: #0f0f12;
+  --subtle: #1c1c21;
+  --line: #24242a;
+  --line-strong: #32323a;
+  --ink: #f5f5f6;
+  --ink-soft: #d4d4d8;
+  --muted: #a1a1aa;
+  --faint: #6e6e78;
+  --primary: #f5f5f6;
+  --primary-ink: #0b0b0c;
+  --ring: rgba(245, 245, 246, 0.14);
+  --chart-stroke: #6e6e78;
+  --chart-fill: #1f1f25;
+  --success: #22c55e;
+  --danger: #f87171;
+  --warning: #fbbf24;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-panel: var(--panel);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, monospace;
+  --shadow-card: 0 1px 2px rgba(16, 16, 20, 0.04), 0 1px 1px rgba(16, 16, 20, 0.02);
+  --animate-blink: blink 1s steps(2, start) infinite;
+  --animate-rise: rise 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--canvas);
+    color: var(--ink);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--surface);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@utility card {
+  @apply rounded-2xl border border-line bg-surface shadow-[var(--shadow-card)];
+}
+
+@utility panel {
+  @apply rounded-2xl border border-line bg-panel;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium whitespace-nowrap transition-all duration-150 select-none disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98];
+}
+
+@utility btn-primary {
+  @apply btn bg-primary text-primary-ink hover:opacity-90;
+}
+
+@utility btn-outline {
+  @apply btn border border-line bg-surface text-ink hover:bg-subtle;
+}
+
+@utility btn-ghost {
+  @apply btn text-muted hover:bg-subtle hover:text-ink;
+}
+
+@utility input {
+  @apply w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-faint outline-none transition focus:border-line-strong focus:ring-4 focus:ring-[var(--ring)];
+}
+
+@utility label {
+  @apply mb-1.5 block text-xs font-medium tracking-wide text-muted;
+}
+
+@utility chip {
+  @apply inline-flex items-center gap-1 rounded-full border border-line bg-surface px-2 py-0.5 text-[11px] font-medium text-muted;
+}
+
+@utility skeleton {
+  background: linear-gradient(90deg, var(--subtle) 25%, var(--line) 37%, var(--subtle) 63%);
+  background-size: 400% 100%;
+  @apply animate-shimmer rounded-lg;
+}
+
+@utility caret {
+  &::after {
+    content: "";
+    display: inline-block;
+    width: 0.5em;
+    height: 1.05em;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    background: currentColor;
+    animation: var(--animate-blink);
+  }
+}
+
+.prose-draft {
+  @apply prose prose-neutral max-w-none dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-h1:text-3xl prose-h2:mt-10 prose-h2:text-xl prose-h3:text-lg prose-a:font-medium prose-a:underline-offset-4 prose-pre:rounded-xl prose-pre:border prose-pre:border-line prose-pre:bg-panel prose-pre:text-ink prose-code:before:content-none prose-code:after:content-none prose-img:rounded-xl prose-img:border prose-img:border-line;
+}
+
+.prose-draft :where(code):not(:where(pre code)) {
+  @apply rounded-md bg-subtle px-1.5 py-0.5 text-[0.85em] font-medium;
+}
+
+.prose-draft table {
+  @apply block overflow-x-auto;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.chat-markdown > :first-child {
+  margin-top: 0;
+}
+
+.chat-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.prose-draft blockquote p:first-of-type::before,
+.prose-draft blockquote p:last-of-type::after {
+  content: none;
+}
